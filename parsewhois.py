@@ -1,5 +1,12 @@
 import pythonwhois
 import argparse
+import json
+import datetime
+
+def datetime_handler(x):
+    if isinstance(x, datetime.datetime):
+        return x.isoformat()
+    raise TypeError("Unknown Type")
 
 parser = argparse.ArgumentParser(description='Get Information From domains in a file as Output in the Form of JSON.')
 parser.add_argument('-i', action='store', nargs=1, required='True', metavar='[FILENAME]', help="Get Info from a domains-file")
@@ -11,5 +18,8 @@ with open(fName) as file_object:
     domains = file_object.readlines()
 
 for d in domains:
-    print d.rstrip()
-#data = pythonwhois.net.get_whois_raw(d,with_server_list =False)
+    data = pythonwhois.get_whois(d)
+    output = json.dumps(data, default=datetime_handler)
+    with open('result.txt', 'a') as outfile:
+        json.dump(output, outfile)
+
