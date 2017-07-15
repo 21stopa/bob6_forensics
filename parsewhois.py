@@ -20,6 +20,6 @@ with open(fName) as file_object:
 for d in domains:
     data = pythonwhois.get_whois(d)
     output = json.dumps(data, default=datetime_handler)
-    with open('result.txt', 'a') as outfile:
+    with open('result.json', 'a') as outfile:
         json.dump(output, outfile)
 
