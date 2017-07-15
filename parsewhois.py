@@ -2,6 +2,7 @@ import pythonwhois
 import argparse
 import json
 import datetime
+import yaml
 
 def datetime_handler(x):
     if isinstance(x, datetime.datetime):
@@ -19,7 +20,8 @@ with open(fName) as file_object:
 
 for d in domains:
     data = pythonwhois.get_whois(d)
-    output = json.dumps(data, default=datetime_handler)
-    with open('result.json', 'a') as outfile:
-        json.dump(output, outfile)
+    output_str = json.dumps(data, default=datetime_handler)
+    output_json = yaml.load(output_str)
+    with open(d + '.json', 'a') as outfile:
+        json.dump(output_json, outfile)
 
